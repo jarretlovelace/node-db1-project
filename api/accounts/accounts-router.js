@@ -1,24 +1,28 @@
 const router = require('express').Router()
+const md = require('./middleware')
 
 router.get('/', (req, res, next) => {
   // DO YOUR MAGIC
 try {
   res.json('get accounts')
 } catch (err) {
-  next(err)
+  next(err);
 }
-})
+});
 
-router.get('/:id', (req, res, next) => {
+router.get('/:id', md.checkAccountId,(req, res, next) => {
   // DO YOUR MAGIC
 try {
 res.json('get accounts by id')
 } catch (err) {
-  next(err)
+  next(err);
 }
-})
+});
 
-router.post('/', (req, res, next) => {
+router.post('/',
+  md.checkAccountPayload,
+   md.checkAccountNameUnique,
+  (req, res, next) => {
   // DO YOUR MAGIC
 try {
 res.json('post account')
@@ -27,15 +31,18 @@ res.json('post account')
 }
 })
 
-router.put('/:id', (req, res, next) => {
+router.put('/:id', 
+  md.checkAccountId, 
+  md.checkAccountPayload,
+  md.checkAccountNameUnique,
+  (req, res, next) => {
   // DO YOUR MAGIC
 try {
 res.json('update account')
-}} catch (err) {
+} catch (err) {
   next(err)
 }
-);
-
+  })
 router.delete('/:id', (req, res, next) => {
   // DO YOUR MAGIC
 try {
